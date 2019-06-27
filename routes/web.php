@@ -40,3 +40,8 @@ Route::get('email/verify', 'Auth\VerificationController@show')->name('verificati
 Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
 // 重新发送用户认证邮件
 Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
+
+// 用户中心
+Route::get('users/{user}', 'UsersController@show')->name('users.show');
+Route::get('users/{user}/edit', 'UsersController@edit')->name('users.edit');
+Route::patch('users/{user}', 'UsersController@update')->name('users.update');
