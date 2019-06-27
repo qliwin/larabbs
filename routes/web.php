@@ -33,6 +33,10 @@ Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 
 // Email 认证相关路由
+// 显示认证邮件提醒页面
 Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
+// 处理认证成功后的业务逻辑，请注意签名认证发生在 `signed` 中间件里，
+// 在 VerificationController 的 __construct 方法里做了设定
 Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
+// 重新发送用户认证邮件
 Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
