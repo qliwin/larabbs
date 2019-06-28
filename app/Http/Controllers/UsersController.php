@@ -23,10 +23,7 @@ class UsersController extends Controller
     // 个人编辑逻辑
     public function update(UserRequest $request, User $user)
     {
-        // dd($request->all());
-        $data = ['introduction'=>$request['introduction']];
-        $user->update($data);
-        // $user->update($request->all());
+        $user->update($request->all());
         return redirect()->route('users.show',$user);
     }
 }

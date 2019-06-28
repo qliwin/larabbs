@@ -26,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
     {
         // 数据库默认字段长度
         Schema::defaultStringLength(191);
+        \Carbon\Carbon::setLocale('zh');
     }
 }
