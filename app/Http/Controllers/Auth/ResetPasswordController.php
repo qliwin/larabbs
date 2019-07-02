@@ -25,7 +25,7 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -35,5 +35,11 @@ class ResetPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    protected function sendResetResponse()
+    {
+        session()->flash('success','密码更新成功，您已成功登录');
+        return redirect($this->redirectPath());
     }
 }
