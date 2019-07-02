@@ -42,7 +42,7 @@ class ImageUploadHandler
 
     public function reduceSize($file_path, $max_width)
     {
-        \Log::info('裁剪');
+        // \Log::info('裁剪');
         // 先实例化，传参是文件的磁盘物理路径
         $image = Image::make($file_path);
         // 进行大小调整的操作
