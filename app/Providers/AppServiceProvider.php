@@ -23,7 +23,10 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
+	{
+		\App\Models\User::observe(\App\Observers\UserObserver::class);
+		\App\Models\Topic::observe(\App\Observers\TopicObserver::class);
+
         // 数据库默认字段长度
         Schema::defaultStringLength(191);
         \Carbon\Carbon::setLocale('zh');
