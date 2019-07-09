@@ -9,6 +9,7 @@
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/brands';
 
+@import "topic_body";
 
 /* universal */
 body {
@@ -106,4 +107,8 @@ body {
 /* Add container and footer space */
 #app > div.container {
     margin-bottom: 100px;
+}
+
+.topic-body img {
+    max-width:100%;
 }
