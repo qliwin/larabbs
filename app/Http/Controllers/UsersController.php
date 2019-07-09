@@ -34,7 +34,7 @@ class UsersController extends Controller
     {
         $this->authorize('update', $user);
         $data = $request->all();
-        dd($request->avatar);
+        // dd($request->avatar);
         if ($request->avatar) {
             $result = $uploader->save($request->avatar, 'avatars', $user->id, 416);
             if ($result) {
