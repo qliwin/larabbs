@@ -42,9 +42,9 @@ class TopicsController extends Controller
 
 		$topic->fill($request->all());
 		$topic->user_id = Auth::id();
-		$topic->save();
+        $topic->save();
 
-		return redirect()->route('topics.show', $topic->id)->with('success', '帖子创建成功');
+        return redirect()->route('topics.show', $topic->id)->with('success', '帖子创建成功');
 
         /*
         因为要使用到 Auth 类，所以需在文件顶部进行加载；
