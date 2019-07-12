@@ -17,31 +17,38 @@ class TopicsController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
-	public function index()
-	{
-		// $topics = Topic::with('user', 'category')->paginate();
-		$topics = Topic::withOrder(request('order'))->paginate();
-		return view('topics.index', compact('topics'));
-	}
+    public function index()
+    {
+        // $topics = Topic::with('user', 'category')->paginate();
+        $topics = Topic::withOrder(request('order'))->paginate();
+
+        return view('topics.index', compact('topics'));
+    }
 
     public function show(Topic $topic)
     {
+        // 如果话题的 Slug 字段不为空；并且话题 Slug 不等于请求的路由参数 Slug；301 永久重定向到正确的 URL 上
+        if (!empty($topic->slug) && request('slug') != $topic->slug) {
+            return redirect($topic->link(), 301);
+        }
+
         return view('topics.show', compact('topic'));
     }
 
     // 话题创建表单
-	public function create(Topic $topic)
-	{
-	    $categories = Category::all();
-		return view('topics.create_and_edit', compact('topic','categories'));
-	}
+    public function create(Topic $topic)
+    {
+        $categories = Category::all();
 
-	// 话题存储
-	public function store(TopicRequest $request, Topic $topic)
-	{
+        return view('topics.create_and_edit', compact('topic', 'categories'));
+    }
 
-		$topic->fill($request->all());
-		$topic->user_id = Auth::id();
+    // 话题存储
+    public function store(TopicRequest $request, Topic $topic)
+    {
+
+        $topic->fill($request->all());
+        $topic->user_id = Auth::id();
         $topic->save();
 
         // return redirect()->route('topics.show', $topic->id)->with('success', '帖子创建成功');
@@ -56,39 +63,40 @@ class TopicsController extends Controller
         Auth::id() 获取到的是当前登录的 ID；
         $topic->save() 保存到数据库中
         */
-	}
+    }
 
-	public function edit(Topic $topic)
-	{
+    public function edit(Topic $topic)
+    {
         $this->authorize('update', $topic);
         $categories = Category::all();
-		return view('topics.create_and_edit', compact('topic','categories'));
-	}
 
-	public function update(TopicRequest $request, Topic $topic)
-	{
-		$this->authorize('update', $topic);
-		$topic->update($request->all());
+        return view('topics.create_and_edit', compact('topic', 'categories'));
+    }
 
-		// return redirect()->route('topics.show', $topic->id)->with('message', 'Updated successfully.');
-		return redirect()->to($topic->link())->with('message', 'Updated successfully.');
-	}
+    public function update(TopicRequest $request, Topic $topic)
+    {
+        $this->authorize('update', $topic);
+        $topic->update($request->all());
 
-	public function destroy(Topic $topic)
-	{
-		$this->authorize('destroy', $topic);
-		$topic->delete();
+        // return redirect()->route('topics.show', $topic->id)->with('message', 'Updated successfully.');
+        return redirect()->to($topic->link())->with('message', 'Updated successfully.');
+    }
 
-		return redirect()->route('topics.index')->with('message', '删除成功');
-	}
+    public function destroy(Topic $topic)
+    {
+        $this->authorize('destroy', $topic);
+        $topic->delete();
+
+        return redirect()->route('topics.index')->with('message', '删除成功');
+    }
 
     public function uploadImage(Request $request, ImageUploadHandler $uploader)
     {
         // 初始化返回数据， 默认是失败的
         $data = [
-          'success' => false,
-          'msg' => '上传失败',
-          'file_path' => '',
+            'success' => false,
+            'msg' => '上传失败',
+            'file_path' => '',
         ];
 
         // 判断是否有上传文件，并赋值给$file
@@ -103,6 +111,7 @@ class TopicsController extends Controller
                 $data['success'] = true;
             }
         }
+
         return $data;
-	}
+    }
 }
