@@ -44,7 +44,8 @@ class TopicsController extends Controller
 		$topic->user_id = Auth::id();
         $topic->save();
 
-        return redirect()->route('topics.show', $topic->id)->with('success', '帖子创建成功');
+        // return redirect()->route('topics.show', $topic->id)->with('success', '帖子创建成功');
+        return redirect()->to($topic->link())->with('success', '帖子创建成功');
 
         /*
         因为要使用到 Auth 类，所以需在文件顶部进行加载；
@@ -69,7 +70,8 @@ class TopicsController extends Controller
 		$this->authorize('update', $topic);
 		$topic->update($request->all());
 
-		return redirect()->route('topics.show', $topic->id)->with('message', 'Updated successfully.');
+		// return redirect()->route('topics.show', $topic->id)->with('message', 'Updated successfully.');
+		return redirect()->to($topic->link())->with('message', 'Updated successfully.');
 	}
 
 	public function destroy(Topic $topic)

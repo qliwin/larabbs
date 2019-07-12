@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Category;
-use App\Models\User;
-
 class Topic extends Model
 {
     protected $fillable = [
@@ -50,5 +47,10 @@ class Topic extends Model
     {
         return $query->orderBy('updated_at', 'desc');
     }
-    
+
+    // 统一返回现实话题链接，params为了后续可以传入其他参数
+    public function link($params = [])
+    {
+        return route('topics.show', array_merge([$this->id, $this->slug], $params));
+    }
 }
