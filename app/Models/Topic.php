@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Reply;
+
 class Topic extends Model
 {
     protected $fillable = [
@@ -52,5 +54,11 @@ class Topic extends Model
     public function link($params = [])
     {
         return route('topics.show', array_merge([$this->id, $this->slug], $params));
+    }
+
+    // 文章与回复的关联关系
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
     }
 }
