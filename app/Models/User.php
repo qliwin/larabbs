@@ -10,7 +10,12 @@ use App\Models\Reply;
 
 class User extends Authenticatable  implements MustVerifyEmailContract
 {
-    use Notifiable, MustVerifyEmailTrait;
+    // use Notifiable, MustVerifyEmailTrait;
+    use MustVerifyEmailTrait;
+    use Notifiable {
+        // 将Notifiable trait中的自带notify方法改名，与自定义方法名冲突，最后还是要用该方法发送消息通知
+        notify as protected laravelNotify;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -55,5 +60,19 @@ class User extends Authenticatable  implements MustVerifyEmailContract
     public function replies()
     {
         return $this->hasMany(Reply::class);
+    }
+
+    public function notify($instance)
+    {
+        // 如果要通知的人是当前用户，则不必通知
+        if ($this->id == \Auth::id()) {
+            return;
+        }
+
+        if (method_exists($instance,'toDatabase')) {
+            $this->increment('notification_count');
+        }
+
+        $this->laravelNotify($instance);
     }
 }

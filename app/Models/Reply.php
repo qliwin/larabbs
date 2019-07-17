@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Reply;
 use App\Models\Topic;
+use App\Models\User;
 
 class Reply extends Model
 {
@@ -12,7 +13,7 @@ class Reply extends Model
     // 回复属于谁
     public function user()
     {
-        return $this->belongsTo(Reply::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     // 回复属于文章
