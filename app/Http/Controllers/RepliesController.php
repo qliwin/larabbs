@@ -17,6 +17,7 @@ class RepliesController extends Controller
     // 保存回复
 	public function store(ReplyRequest $request, Reply $reply)
 	{
+        ini_set('max_execution_time','1000');
         $reply->content = $request->content;
         $reply->topic_id = $request->topic_id;
         $reply->user_id = \Auth::id();
